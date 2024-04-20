@@ -16,8 +16,9 @@ export default class BoardUser extends Component {
 		UserService.getUserBoard().then(
 			response => {
 				this.setState({
-					content: response.data,
+					content: this.displayValues(response.data.notes),
 				});
+				console.log(response.data.notes);
 			},
 			error => {
 				this.setState({
@@ -32,12 +33,23 @@ export default class BoardUser extends Component {
 	}
 
 	render() {
-		return (
-			<div className='container'>
-				<header className='jumbotron'>
-					<h3>{this.state.content}</h3>
-				</header>
-			</div>
-		);
+		return <div className='container res'>{this.state.content}</div>;
+		// return this.displayValues(this.state.content);
+	}
+
+	displayValues(arr) {
+		console.log(arr);
+		arr.forEach(obj => {
+			const header = obj.header;
+			const text = obj.text;
+
+			const h1Element = document.createElement('h3');
+			h1Element.textContent = header;
+			document.querySelector('.container').appendChild(h1Element);
+
+			const aElement = document.createElement('p');
+			aElement.textContent = text;
+			document.querySelector('.container').appendChild(aElement);
+		});
 	}
 }
