@@ -26,7 +26,7 @@ public class User {
     @Column(unique = true)
     private String password;
 
-    private String role;
+    private String role = "USER";
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner_id")
     private List<Note> notes_list = new ArrayList<>();

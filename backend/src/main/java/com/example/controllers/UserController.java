@@ -5,6 +5,7 @@ import com.example.model.User;
 import com.example.repository.NoteRepository;
 import com.example.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,18 +27,45 @@ public class UserController {
         List<Note> allNotes = noteRepository.findAll();
         User user = userRepository.getUserByUsername(principal.getName());
 
-        return ResponseEntity.ok("{ \"data\": " + allNotes.stream().filter(note -> note.getOwner_id().equals(user.getUser_id())).toList() + " }");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("notes", allNotes.stream().filter(note -> note.getOwner_id().equals(user.getUser_id())).toList());
+
+        return ResponseEntity.ok(jsonObject.toString());
     }
 
     @PostMapping("/board/create-note")
-    public String createNote(Principal principal, @RequestBody Note note) {
+    public ResponseEntity<?> createNote(Principal principal, @RequestBody Note note) {
         if (principal == null)
             return null;
 
         User user = userRepository.getUserByUsername(principal.getName());
         note.setOwner_id(user.getUser_id());
         noteRepository.save(note);
-        return "Заметка успешно создана!";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", "Заметка успешно создана!");
+
+        return ResponseEntity.ok(jsonObject.toString());
+    }
+
+    @PutMapping("/board/update_note")
+    public ResponseEntity<?> updateStudent(@RequestBody Note note) {
+        // TODO
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", "Заметка успешно сохранена!");
+
+        return ResponseEntity.ok(jsonObject.toString());
+    }
+
+    @DeleteMapping("/board/delete-note/{user_id}")
+    public ResponseEntity<?> deleteNote(@PathVariable("user_id") Long user_id, Principal principal) {
+        // TODO
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", "Заметка успешно удалена!");
+
+        return ResponseEntity.ok(jsonObject.toString());
     }
 
     @GetMapping("/profile")
