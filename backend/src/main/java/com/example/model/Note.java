@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long note_id;
+    private Long noteId;
 
     @JoinColumn(name = "owner_id")
     private Long owner_id;

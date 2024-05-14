@@ -38,12 +38,16 @@ public class SecurityController {
 
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
+        JSONObject jsonObject = new JSONObject();
+
         if (userRepository.existsUserByUsername(signupRequest.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(" Пользователь с таким username уже существует");
+            jsonObject.put("message", "Пользователь с таким username уже существует!");
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(jsonObject.toString());
         }
 
         if (userRepository.existsUserByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Пользователь с таким email уже существует");
+            jsonObject.put("message", "Пользователь с таким email уже существует!");
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(jsonObject.toString());
         }
 
         User user = new User();
@@ -52,9 +56,7 @@ public class SecurityController {
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
         userRepository.save(user);
 
-        JSONObject jsonObject = new JSONObject();
         jsonObject.put("message", "Регистрация прошла успешно!");
-
         return ResponseEntity.ok(jsonObject.toString());
     }
 

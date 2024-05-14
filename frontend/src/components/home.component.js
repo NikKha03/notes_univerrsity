@@ -30,7 +30,8 @@ export default class Home extends Component {
 		return (
 			<div className='container'>
 				<header className='jumbotron'>
-					<h3>{this.state.content}</h3>
+					{/* <h3>{this.state.content}</h3> */}
+					<textarea rows={20}></textarea>
 				</header>
 			</div>
 		);
