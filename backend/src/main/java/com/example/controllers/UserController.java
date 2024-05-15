@@ -77,7 +77,6 @@ public class UserController {
     @Transactional
     @DeleteMapping("/board/delete_note/{note_id}")
     public ResponseEntity<?> deleteNote(@PathVariable("note_id") Long note_id, Principal principal) {
-        // TODO
         JSONObject jsonObject = new JSONObject();
         User user = userRepository.getUserByUsername(principal.getName());
 
